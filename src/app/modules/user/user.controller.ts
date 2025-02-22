@@ -11,19 +11,12 @@ import { storeFile } from '../../utils/fileHelper';
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   // return res.send({data: req.body})
- if (req.file) {
-   req.body.image = storeFile('profile', req?.file?.filename);
- }
-  // if (req.files) {
-  //   const { image } = req.files as UploadedFiles;
-
-  //   if (image) {
-  //     req.body.image = await uploadToS3({
-  //       file: req.file,
-  //       fileName: `images/user/profile/${Math.floor(100000 + Math.random() * 900000)}`,
-  //     });
-  //   }
-  // }
+  if (req.file) {
+    req.body.image = await uploadToS3({
+      file: req.file, // Ensure it's req.file for a single file
+      fileName: `images/user/profile/${Math.floor(100000 + Math.random() * 900000)}`,
+    });
+  }
   const result = await userService.createUser(req.body);
   const sendOtp = await otpServices.resendOtp(result?.email);
   sendResponse(res, {

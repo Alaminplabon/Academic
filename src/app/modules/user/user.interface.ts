@@ -16,6 +16,7 @@ export interface IUser {
   role: string;
   isGoogleLogin: boolean;
   address?: string;
+  location: { coordinates: [number, number]; type: string };
   needsPasswordChange: boolean;
   passwordChangedAt?: Date;
   isDeleted: boolean;
@@ -24,6 +25,12 @@ export interface IUser {
     expiresAt: Date;
     status: boolean;
   };
+  language: string;
+  title: string;
+  affiliation: string;
+  department: string;
+  placeOfOrigin: string;
+  researchInterest: string;
 }
 
 export interface UserModel extends Model<IUser> {

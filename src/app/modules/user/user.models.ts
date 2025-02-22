@@ -3,6 +3,7 @@ import config from '../../config';
 import bcrypt from 'bcrypt';
 import { IUser, UserModel } from './user.interface';
 import { Role, USER_ROLE } from './user.constants';
+import { string } from 'zod';
 
 const userSchema: Schema<IUser> = new Schema(
   {
@@ -56,6 +57,18 @@ const userSchema: Schema<IUser> = new Schema(
       type: String,
       default: null,
     },
+    // Define location as a GeoJSON Point
+    location: {
+      type: {
+        type: String,
+        enum: ['Point'],
+        default: 'Point',
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
+    },
     needsPasswordChange: {
       type: Boolean,
     },
@@ -78,6 +91,24 @@ const userSchema: Schema<IUser> = new Schema(
         type: Boolean,
         default: false,
       },
+    },
+    language: {
+      type: String,
+    },
+    title: {
+      type: String,
+    },
+    affiliation: {
+      type: String,
+    },
+    department: {
+      type: String,
+    },
+    placeOfOrigin: {
+      type: String,
+    },
+    researchInterest: {
+      type: String,
     },
   },
   {
@@ -139,5 +170,7 @@ userSchema.statics.isPasswordMatched = async function (
 ) {
   return await bcrypt.compare(plainTextPassword, hashedPassword);
 };
+
+// userSchema.index({ location: '2dsphere' });
 
 export const User = model<IUser, UserModel>('User', userSchema);
