@@ -11,6 +11,7 @@ const EventSchema: Schema<Ievent> = new Schema(
     event_start_date: { type: String, required: true },
     event_end_date: { type: String, required: true },
     posted_by: { type: String, required: true },
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   },
   { timestamps: true },
 );

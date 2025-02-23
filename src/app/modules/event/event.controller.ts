@@ -4,6 +4,7 @@ import { eventService } from './event.service';
 
 // Create Event
 const createevent = catchAsync(async (req: Request, res: Response) => {
+  req.body.userId = req?.user?.userId;
   const eventData = req.body;
   const newEvent = await eventService.createevent(eventData);
   res.status(201).json({
@@ -14,7 +15,7 @@ const createevent = catchAsync(async (req: Request, res: Response) => {
 
 // Get All Events
 const getAllevent = catchAsync(async (req: Request, res: Response) => {
-  const events = await eventService.getAllevent();
+  const events = await eventService.getAllevent(req.query);
   res.status(200).json({
     status: 'success',
     data: events,
@@ -24,7 +25,23 @@ const getAllevent = catchAsync(async (req: Request, res: Response) => {
 // Get Event by ID
 const geteventById = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const event = await eventService.geteventById(id);
+  const event = await eventService.geteventById(id, req.query);
+  if (!event) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Event not found',
+    });
+  }
+  res.status(200).json({
+    status: 'success',
+    data: event,
+  });
+});
+
+// Get Event by ID
+const getMyeventById = catchAsync(async (req: Request, res: Response) => {
+  const id = req?.user?.userId;
+  const event = await eventService.getMyeventById(id, req.query);
   if (!event) {
     return res.status(404).json({
       status: 'fail',
@@ -76,4 +93,5 @@ export const eventController = {
   geteventById,
   updateevent,
   deleteevent,
+  getMyeventById,
 };

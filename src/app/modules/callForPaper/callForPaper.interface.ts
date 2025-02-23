@@ -7,4 +7,5 @@ export interface IcallForPaper {
   abstract_submission_deadline: string;
   keywords: string[];
   comment: string;
+  userId: object;
 }

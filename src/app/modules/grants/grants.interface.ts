@@ -9,4 +9,5 @@ export interface Igrants {
   start_date: string;
   application_deadline: string;
   comment: string;
+  userId: object;
 }

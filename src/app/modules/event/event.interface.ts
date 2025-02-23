@@ -7,4 +7,5 @@ export interface Ievent {
   event_start_date: string;
   event_end_date: string;
   posted_by: string;
+  userId: object;
 }

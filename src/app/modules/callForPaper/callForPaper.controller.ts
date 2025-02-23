@@ -6,6 +6,7 @@ import { callForPaperService } from './callForPaper.service';
 
 // Create Call for Paper
 const createcallForPaper = catchAsync(async (req: Request, res: Response) => {
+  req.body.userId = req?.user?.userId;
   const newCallForPaper = await callForPaperService.createcallForPaper(
     req.body,
   );
@@ -17,7 +18,9 @@ const createcallForPaper = catchAsync(async (req: Request, res: Response) => {
 
 // Get All Call for Papers
 const getAllcallForPaper = catchAsync(async (req: Request, res: Response) => {
-  const callForPaperList = await callForPaperService.getAllcallForPaper();
+  const callForPaperList = await callForPaperService.getAllcallForPaper(
+    req.query,
+  );
   res.status(200).json({
     status: 'success',
     data: callForPaperList,
@@ -27,7 +30,10 @@ const getAllcallForPaper = catchAsync(async (req: Request, res: Response) => {
 // Get Call for Paper by ID
 const getcallForPaperById = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const callForPaper = await callForPaperService.getcallForPaperById(id);
+  const callForPaper = await callForPaperService.getcallForPaperById(
+    id,
+    req.query,
+  );
   if (!callForPaper) {
     return res.status(404).json({
       status: 'fail',
@@ -39,6 +45,27 @@ const getcallForPaperById = catchAsync(async (req: Request, res: Response) => {
     data: callForPaper,
   });
 });
+
+// Get Call for Paper by ID
+const getMycallForPaperById = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req?.user?.userId;
+    const callForPaper = await callForPaperService.getMycallForPaperById(
+      id,
+      req.query,
+    );
+    if (!callForPaper) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Call for Paper not found',
+      });
+    }
+    res.status(200).json({
+      status: 'success',
+      data: callForPaper,
+    });
+  },
+);
 
 // Update Call for Paper
 const updatecallForPaper = catchAsync(async (req: Request, res: Response) => {
@@ -81,4 +108,5 @@ export const callForPaperController = {
   getcallForPaperById,
   updatecallForPaper,
   deletecallForPaper,
+  getMycallForPaperById,
 };

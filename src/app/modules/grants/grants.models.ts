@@ -14,6 +14,7 @@ const GrantsSchema: Schema<Igrants> = new Schema(
     start_date: { type: String, required: true },
     application_deadline: { type: String, required: true },
     comment: { type: String },
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   },
   { timestamps: true },
 );

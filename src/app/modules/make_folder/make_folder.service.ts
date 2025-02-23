@@ -1,0 +1,53 @@
+import { IMake_Folder } from './make_folder.interface';
+import MakeFolder from './make_folder.models';
+
+// Create Make Folder
+const createmake_folder = async (userId: object, isPrivate: boolean) => {
+  const newFolder = await MakeFolder.create({ userId, isPrivate });
+  return newFolder;
+};
+
+// Get All Make Folders
+const getAllmake_folder = async (userId: object) => {
+  const folders = await MakeFolder.find({ isPrivate: false }).or([
+    { userId },
+    { isPrivate: true },
+  ]);
+  return folders;
+};
+
+// Get Make Folder by ID
+const getmake_folderById = async (id: string) => {
+  const folder = await MakeFolder.findById(id);
+  return folder;
+};
+
+// Update Make Folder
+const updatemake_folder = async (id: string, isPrivate: boolean) => {
+  const updatedFolder = await MakeFolder.findByIdAndUpdate(
+    id,
+    { isPrivate },
+    { new: true },
+  );
+  return updatedFolder;
+};
+
+// Delete Make Folder
+const deletemake_folder = async (id: string) => {
+  const deletedFolder = await MakeFolder.findByIdAndDelete(id);
+  return deletedFolder;
+};
+
+const getMyFolders = async (userId: object) => {
+  const folders = await MakeFolder.find({ userId });
+  return folders;
+};
+
+export const make_folderService = {
+  createmake_folder,
+  getAllmake_folder,
+  getmake_folderById,
+  updatemake_folder,
+  deletemake_folder,
+  getMyFolders,
+};

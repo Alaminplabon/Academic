@@ -5,19 +5,30 @@ import { grantsService } from './grants.service';
 
 // Create Grant
 const creategrants = catchAsync(async (req: Request, res: Response) => {
+  req.body.userId = req?.user?.userId;
   const grant = await grantsService.creategrants(req.body);
   res.status(201).json({ status: 'success', data: grant });
 });
 
 // Get All Grants
 const getAllgrants = catchAsync(async (req: Request, res: Response) => {
-  const grants = await grantsService.getAllgrants();
+  const grants = await grantsService.getAllgrants(req.query);
   res.status(200).json({ status: 'success', data: grants });
 });
 
 // Get Grant by ID
 const getgrantsById = catchAsync(async (req: Request, res: Response) => {
-  const grant = await grantsService.getgrantsById(req.params.id);
+  const grant = await grantsService.getgrantsById(req.params.id, req.query);
+  if (!grant) {
+    return res.status(404).json({ status: 'fail', message: 'Grant not found' });
+  }
+  res.status(200).json({ status: 'success', data: grant });
+});
+
+// Get Grant by ID
+const getMygrantsById = catchAsync(async (req: Request, res: Response) => {
+  const id = req?.user?.userId;
+  const grant = await grantsService.getMygrantsById(id, req.query);
   if (!grant) {
     return res.status(404).json({ status: 'fail', message: 'Grant not found' });
   }
@@ -53,4 +64,5 @@ export const grantsController = {
   getgrantsById,
   updategrants,
   deletegrants,
+  getMygrantsById,
 };

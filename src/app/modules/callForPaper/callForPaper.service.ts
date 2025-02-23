@@ -1,5 +1,6 @@
 // Service
 
+import QueryBuilder from '../../builder/QueryBuilder';
 import { IcallForPaper } from './callForPaper.interface';
 import CallForPaper from './callForPaper.models';
 
@@ -8,14 +9,61 @@ const createcallForPaper = async (data: IcallForPaper) => {
   return newCallForPaper;
 };
 
-const getAllcallForPaper = async () => {
-  const callForPaperList = await CallForPaper.find();
-  return callForPaperList;
+const getAllcallForPaper = async (query: Record<string, any>) => {
+  const callForPaperModel = new QueryBuilder(CallForPaper.find(), query)
+    .search(['title', 'description', 'status'])
+    .filter()
+    .paginate()
+    .sort();
+
+  const data: any = await callForPaperModel.modelQuery;
+  const meta = await callForPaperModel.countTotal();
+
+  return {
+    data,
+    meta,
+  };
 };
 
-const getcallForPaperById = async (id: string) => {
-  const callForPaper = await CallForPaper.findById(id);
-  return callForPaper;
+const getcallForPaperById = async (id: string, query: Record<string, any>) => {
+  const callForPaperModel = new QueryBuilder(
+    CallForPaper.find({ _id: id }),
+    query,
+  )
+    .search(['title', 'description', 'status'])
+    .filter()
+    .paginate()
+    .sort();
+
+  const data: any = await callForPaperModel.modelQuery;
+  const meta = await callForPaperModel.countTotal();
+
+  return {
+    data,
+    meta,
+  };
+};
+
+const getMycallForPaperById = async (
+  id: string,
+  query: Record<string, any>,
+) => {
+  const callForPaperModel = new QueryBuilder(
+    CallForPaper.find({ userId: id }),
+    query,
+  )
+    .search(['title', 'description', 'status'])
+    .filter()
+    .paginate()
+    .sort();
+
+  const data: any = await callForPaperModel.modelQuery;
+  const meta = await callForPaperModel.countTotal();
+
+  return {
+    data,
+    meta,
+  };
 };
 
 const updatecallForPaper = async (id: string, data: Partial<IcallForPaper>) => {
@@ -36,4 +84,5 @@ export const callForPaperService = {
   getcallForPaperById,
   updatecallForPaper,
   deletecallForPaper,
+  getMycallForPaperById,
 };

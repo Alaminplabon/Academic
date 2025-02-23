@@ -8,4 +8,5 @@ export interface IjobPost {
   application_deadline: string;
   keywords: string[];
   comment: string;
+  userId: object;
 }

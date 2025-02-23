@@ -13,6 +13,7 @@ const JobPostSchema: Schema<IjobPost> = new Schema(
     application_deadline: { type: String, required: true },
     keywords: { type: [String], required: true },
     comment: { type: String },
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   },
   { timestamps: true },
 );
