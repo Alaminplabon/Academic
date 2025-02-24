@@ -13,7 +13,7 @@ const CallForpaperFavouriteSchema: Schema<IcallForPaper_favourite> = new Schema(
       ref: 'CallForPaper',
       required: true,
     },
-    favourite: { type: Boolean, required: true, default: false },
+    favourite: { type: Boolean, required: true },
   },
   { timestamps: true },
 );

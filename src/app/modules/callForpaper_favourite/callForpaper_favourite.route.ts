@@ -7,6 +7,7 @@ const router = Router();
 
 router.post(
   '/create-callForpaper_favourite',
+  auth(USER_ROLE.user),
   callForpaper_favouriteController.createcallForpaper_favourite,
 );
 

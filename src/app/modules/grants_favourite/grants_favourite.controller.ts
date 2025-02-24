@@ -5,12 +5,10 @@ import { grants_favouriteService } from './grants_favourite.service';
 // Create Grants Favourite
 const creategrants_favourite = catchAsync(
   async (req: Request, res: Response) => {
-    const { grantsId } = req.body;
     const userId = req?.user?.userId;
-
+    req.body.userId = userId;
     const newFavourite = await grants_favouriteService.creategrants_favourite(
-      userId,
-      grantsId,
+      req.body,
     );
 
     res.status(201).json({

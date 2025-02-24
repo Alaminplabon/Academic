@@ -26,7 +26,9 @@ const getAllarticle = catchAsync(async (req: Request, res: Response) => {
 
 // Get Article by ID
 const getarticleById = catchAsync(async (req: Request, res: Response) => {
+  console.log('test');
   const { id } = req.params;
+  console.log('id', id);
   const article = await articleService.getarticleById(id);
   if (!article) {
     return res.status(404).json({
@@ -43,8 +45,8 @@ const getarticleById = catchAsync(async (req: Request, res: Response) => {
 // Get Articles by Folder ID
 const getArticlesByFolderId = catchAsync(
   async (req: Request, res: Response) => {
-    const { folderId } = req.params;
-    const articles = await articleService.getArticlesByFolderId(folderId);
+    const {id} = req.params;
+    const articles = await articleService.getArticlesByFolderId(id as any);
     res.status(200).json({
       status: 'success',
       data: articles,

@@ -3,10 +3,19 @@ import { Igrants_favourite } from './grants_favourite.interface';
 import GrantsFavourite from './grants_favourite.models';
 
 // Create Grants Favourite
-const creategrants_favourite = async (userId: string, grantsId: string) => {
+const creategrants_favourite = async (payload: Igrants_favourite) => {
+  // Check if the favourite entry already exists
+  const existingGrants = await GrantsFavourite.findOne({
+    userId: payload.userId,
+    grantsId: payload.grantsId,
+    favourite: true,
+  });
+
+  if (existingGrants) {
+    throw new Error('Already added to your favourite list');
+  }
   const newFavourite = await GrantsFavourite.create({
-    userId,
-    grantsId,
+    ...payload,
   });
   return newFavourite;
 };

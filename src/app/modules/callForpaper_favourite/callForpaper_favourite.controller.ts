@@ -5,13 +5,11 @@ import { callForpaper_favouriteService } from './callForpaper_favourite.service'
 // Create Call for Paper Favourite
 const createcallForpaper_favourite = catchAsync(
   async (req: Request, res: Response) => {
-    const { callForPaperId } = req.body;
     const userId = req?.user?.userId;
-
+    req.body.userId = userId;
     const newFavourite =
       await callForpaper_favouriteService.createcallForpaper_favourite(
-        userId,
-        callForPaperId,
+        req.body,
       );
 
     res.status(201).json({

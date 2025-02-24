@@ -10,11 +10,12 @@ router.post(
   auth(USER_ROLE.user),
   articleController.createarticle,
 );
+router.get('/folder/:id', articleController.getArticlesByFolderId);
 
 router.patch('/update/:id', articleController.updatearticle);
 
 router.delete('/:id', articleController.deletearticle);
-router.get('/:folderId', articleController.getArticlesByFolderId);
+
 router.get('/:id', articleController.getarticleById);
 router.get('/', articleController.getAllarticle);
 

@@ -4,12 +4,20 @@ import CallForpaperFavourite from './callForpaper_favourite.models';
 
 // Create Call for Paper Favourite
 const createcallForpaper_favourite = async (
-  userId: string,
-  callForPaperId: string,
+  payload: IcallForPaper_favourite,
 ) => {
+  // Check if the favourite entry already exists
+  const existingFavourite = await CallForpaperFavourite.findOne({
+    userId: payload.userId,
+    callForPaperId: payload.callForPaperId,
+    favourite: true,
+  });
+
+  if (existingFavourite) {
+    throw new Error('Already added to your favourite list');
+  }
   const newFavourite = await CallForpaperFavourite.create({
-    userId,
-    callForPaperId,
+    ...payload,
   });
   return newFavourite;
 };

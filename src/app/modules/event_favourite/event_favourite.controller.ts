@@ -5,12 +5,10 @@ import { event_favouriteService } from './event_favourite.service';
 // Create Event Favourite
 const createevent_favourite = catchAsync(
   async (req: Request, res: Response) => {
-    const { eventId } = req.body;
     const userId = req?.user?.userId;
-
+    req.body.userId = userId;
     const newFavourite = await event_favouriteService.createevent_favourite(
-      userId,
-      eventId,
+      req.body,
     );
 
     res.status(201).json({

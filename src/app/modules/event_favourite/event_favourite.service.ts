@@ -3,10 +3,19 @@ import { Ievent_favourite } from './event_favourite.interface';
 import EventFavourite from './event_favourite.models';
 
 // Create Event Favourite
-const createevent_favourite = async (userId: string, eventId: string) => {
+const createevent_favourite = async (payload: Ievent_favourite) => {
+  // Check if the favourite entry already exists
+  const existingEvent = await EventFavourite.findOne({
+    userId: payload.userId,
+    eventId: payload.eventId,
+    favourite: true,
+  });
+
+  if (existingEvent) {
+    throw new Error('Already added to your favourite list');
+  }
   const newFavourite = await EventFavourite.create({
-    userId,
-    eventId,
+    ...payload,
   });
   return newFavourite;
 };

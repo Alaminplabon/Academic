@@ -2,8 +2,12 @@ import { IMake_Folder } from './make_folder.interface';
 import MakeFolder from './make_folder.models';
 
 // Create Make Folder
-const createmake_folder = async (userId: object, isPrivate: boolean) => {
-  const newFolder = await MakeFolder.create({ userId, isPrivate });
+const createmake_folder = async (userId: object, payload: IMake_Folder) => {
+  const newFolder = await MakeFolder.create({
+    userId,
+    isPrivate: payload.isPrivate,
+    name: payload.name,
+  });
   return newFolder;
 };
 
@@ -39,7 +43,7 @@ const deletemake_folder = async (id: string) => {
 };
 
 const getMyFolders = async (userId: object) => {
-  const folders = await MakeFolder.find({ userId });
+  const folders = await MakeFolder.find({ userId: userId });
   return folders;
 };
 

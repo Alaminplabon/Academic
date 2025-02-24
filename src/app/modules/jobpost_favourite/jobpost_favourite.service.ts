@@ -3,10 +3,19 @@ import { Ijobpost_favourite } from './jobpost_favourite.interface';
 import JobPostFavourite from './jobpost_favourite.models';
 
 // Create Job Post Favourite
-const createjobpost_favourite = async (userId: string, jobpostId: string) => {
+const createjobpost_favourite = async (payload: Ijobpost_favourite) => {
+  // Check if the favourite entry already exists
+  const existingJobPost = await JobPostFavourite.findOne({
+    userId: payload.userId,
+    jobpostId: payload.jobpostId,
+    favourite: true,
+  });
+
+  if (existingJobPost) {
+    throw new Error('Already added to your favourite list');
+  }
   const newFavourite = await JobPostFavourite.create({
-    userId,
-    jobpostId,
+    ...payload,
   });
   return newFavourite;
 };

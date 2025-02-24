@@ -5,12 +5,10 @@ import { jobpost_favouriteService } from './jobpost_favourite.service';
 // Create Job Post Favourite
 const createjobpost_favourite = catchAsync(
   async (req: Request, res: Response) => {
-    const { jobpostId } = req.body;
     const userId = req?.user?.userId;
-
+    req.body.userId = userId;
     const newFavourite = await jobpost_favouriteService.createjobpost_favourite(
-      userId,
-      jobpostId,
+      req.body,
     );
 
     res.status(201).json({

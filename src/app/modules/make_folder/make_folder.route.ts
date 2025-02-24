@@ -17,7 +17,7 @@ router.delete('/:id', make_folderController.deletemake_folder);
 router.get(
   '/my-make_folder',
   auth(USER_ROLE.user),
-  make_folderController.getmake_folderById,
+  make_folderController.getMyFolders,
 );
 router.get('/:id', make_folderController.getmake_folderById);
 router.get('/', auth(USER_ROLE.user), make_folderController.getAllmake_folder);

@@ -4,12 +4,11 @@ import { make_folderService } from './make_folder.service';
 
 // Create Make Folder
 const createmake_folder = catchAsync(async (req: Request, res: Response) => {
-  const { isPrivate } = req.body;
   const userId = req?.user?.userId; // Assuming user ID is retrieved from the token
 
   const newFolder = await make_folderService.createmake_folder(
     userId,
-    isPrivate,
+    req.body,
   );
   res.status(201).json({
     status: 'success',
@@ -80,7 +79,7 @@ const deletemake_folder = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getMyFolders = catchAsync(async (req: Request, res: Response) => {
-  const userId = req?.user?.userId; // Assuming user ID is retrieved from the token
+  const userId = req?.user?.userId;
   const folders = await make_folderService.getMyFolders(userId);
   res.status(200).json({
     status: 'success',
