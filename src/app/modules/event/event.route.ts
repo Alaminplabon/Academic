@@ -5,7 +5,7 @@ import { USER_ROLE } from '../user/user.constants';
 
 const router = Router();
 
-router.post('/create-event', eventController.createevent);
+router.post('/create-event', auth(USER_ROLE.user), eventController.createevent);
 
 router.patch('/update/:id', eventController.updateevent);
 

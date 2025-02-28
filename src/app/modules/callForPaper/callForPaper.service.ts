@@ -11,7 +11,7 @@ const createcallForPaper = async (data: IcallForPaper) => {
 
 const getAllcallForPaper = async (query: Record<string, any>) => {
   const callForPaperModel = new QueryBuilder(CallForPaper.find(), query)
-    .search(['title', 'description', 'status'])
+    .search(['title'])
     .filter()
     .paginate()
     .sort();
@@ -30,7 +30,7 @@ const getcallForPaperById = async (id: string, query: Record<string, any>) => {
     CallForPaper.find({ _id: id }),
     query,
   )
-    .search(['title', 'description', 'status'])
+    .search(['title'])
     .filter()
     .paginate()
     .sort();
@@ -52,7 +52,7 @@ const getMycallForPaperById = async (
     CallForPaper.find({ userId: id }),
     query,
   )
-    .search(['title', 'description', 'status'])
+    .search(['title'])
     .filter()
     .paginate()
     .sort();

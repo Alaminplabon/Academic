@@ -1,5 +1,6 @@
 export interface Ievent {
   title: string;
+  eventType: string;
   url: string;
   organizer: string;
   mode_of_participation: string;

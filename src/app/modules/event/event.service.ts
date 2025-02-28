@@ -9,7 +9,7 @@ const createevent = async (eventData: Ievent) => {
 
 const getAllevent = async (query: Record<string, any>) => {
   const eventModel = new QueryBuilder(Event.find(), query)
-    .search(['name', 'location', 'date'])
+    .search(['title'])
     .filter()
     .paginate()
     .sort();
@@ -25,7 +25,7 @@ const getAllevent = async (query: Record<string, any>) => {
 
 const geteventById = async (id: string, query: Record<string, any>) => {
   const eventModel = new QueryBuilder(Event.find({ _id: id }), query)
-    .search(['name', 'location', 'date'])
+    .search(['title'])
     .filter()
     .paginate()
     .sort();
@@ -40,7 +40,7 @@ const geteventById = async (id: string, query: Record<string, any>) => {
 
 const getMyeventById = async (id: string, query: Record<string, any>) => {
   const eventModel = new QueryBuilder(Event.find({ userId: id }), query)
-    .search(['name', 'location', 'date'])
+    .search(['title'])
     .filter()
     .paginate()
     .sort();

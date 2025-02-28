@@ -31,6 +31,10 @@ export interface IUser {
   department: string;
   placeOfOrigin: string;
   researchInterest: string;
+  firstName: string;
+  lastName: string;
+  languages: string[];
+  about: string;
 }
 
 export interface UserModel extends Model<IUser> {

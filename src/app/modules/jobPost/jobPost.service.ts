@@ -9,7 +9,7 @@ const createjobPost = async (data: IjobPost) => {
 
 const getAlljobPost = async (query: Record<string, any>) => {
   const jobPostModel = new QueryBuilder(JobPost.find(), query)
-    .search(['title', 'company', 'location'])
+    .search(['title'])
     .filter()
     .paginate()
     .sort();
@@ -25,7 +25,7 @@ const getAlljobPost = async (query: Record<string, any>) => {
 
 const getjobPostById = async (id: string, query: Record<string, any>) => {
   const jobPostModel = new QueryBuilder(JobPost.find({ _id: id }), query)
-    .search(['title', 'company', 'location'])
+    .search(['title'])
     .filter()
     .paginate()
     .sort();
@@ -41,7 +41,7 @@ const getjobPostById = async (id: string, query: Record<string, any>) => {
 
 const getMyjobPostById = async (id: string, query: Record<string, any>) => {
   const jobPostModel = new QueryBuilder(JobPost.find({ userId: id }), query)
-    .search(['title', 'company', 'location'])
+    .search(['title'])
     .filter()
     .paginate()
     .sort();

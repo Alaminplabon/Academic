@@ -14,7 +14,15 @@ const userSchema: Schema<IUser> = new Schema(
     },
     name: {
       type: String,
-      required: true,
+      // required: true,
+      default: null,
+    },
+    firstName: {
+      type: String,
+      default: null,
+    },
+    lastName: {
+      type: String,
       default: null,
     },
     email: {
@@ -24,7 +32,6 @@ const userSchema: Schema<IUser> = new Schema(
     },
     phoneNumber: {
       type: String,
-      required: true,
       default: null,
     },
     password: {
@@ -57,6 +64,10 @@ const userSchema: Schema<IUser> = new Schema(
       type: String,
       default: null,
     },
+    languages: {
+      type: [String],
+      default: null,
+    },
     // Define location as a GeoJSON Point
     location: {
       type: {
@@ -66,7 +77,6 @@ const userSchema: Schema<IUser> = new Schema(
       },
       coordinates: {
         type: [Number],
-        required: true,
       },
     },
     needsPasswordChange: {
@@ -108,6 +118,9 @@ const userSchema: Schema<IUser> = new Schema(
       type: String,
     },
     researchInterest: {
+      type: String,
+    },
+    about: {
       type: String,
     },
   },

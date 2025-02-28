@@ -23,7 +23,7 @@ router.post(
 
 router.patch(
   '/update/:id',
-  auth(USER_ROLE.admin, USER_ROLE.sub_admin, USER_ROLE.super_admin),
+  // auth(USER_ROLE.admin, USER_ROLE.sub_admin, USER_ROLE.super_admin),
   upload.single('image'),
   parseData(),
   userController.updateUser,
@@ -31,12 +31,7 @@ router.patch(
 
 router.patch(
   '/update-my-profile',
-  auth(
-    USER_ROLE.admin,
-    USER_ROLE.sub_admin,
-    USER_ROLE.super_admin,
-    USER_ROLE.user,
-  ),
+  auth(USER_ROLE.admin, USER_ROLE.user),
   upload.single('image'),
   parseData(),
   userController.updateMyProfile,
@@ -53,7 +48,11 @@ router.delete(
   userController.deleteUser,
 );
 
-router.get('/my-profile', auth(USER_ROLE.admin), userController.getMyProfile);
+router.get(
+  '/my-profile',
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  userController.getMyProfile,
+);
 
 router.get('/:id', userController.getUserById);
 

@@ -9,7 +9,7 @@ const creategrants = async (grantData: Igrants) => {
 
 const getAllgrants = async (query: Record<string, any>) => {
   const grantsModel = new QueryBuilder(Grants.find(), query)
-    .search(['title', 'amount', 'status'])
+    .search(['name'])
     .filter()
     .paginate()
     .sort();
@@ -25,7 +25,7 @@ const getAllgrants = async (query: Record<string, any>) => {
 
 const getgrantsById = async (id: string, query: Record<string, any>) => {
   const grantsModel = new QueryBuilder(Grants.find({ _id: id }), query)
-    .search(['title', 'amount', 'status'])
+    .search(['name'])
     .filter()
     .paginate()
     .sort();
@@ -41,7 +41,7 @@ const getgrantsById = async (id: string, query: Record<string, any>) => {
 
 const getMygrantsById = async (id: string, query: Record<string, any>) => {
   const grantsModel = new QueryBuilder(Grants.find({ userId: id }), query)
-    .search(['title', 'amount', 'status'])
+    .search(['name'])
     .filter()
     .paginate()
     .sort();

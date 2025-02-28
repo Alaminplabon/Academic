@@ -17,6 +17,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
       fileName: `images/user/profile/${Math.floor(100000 + Math.random() * 900000)}`,
     });
   }
+  req.body.name = req.body.firstName + ' ' + req.body.lastName;
   const result = await userService.createUser(req.body);
   const sendOtp = await otpServices.resendOtp(result?.email);
   sendResponse(res, {
@@ -58,39 +59,35 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateUser = catchAsync(async (req: Request, res: Response) => {
-  await User.findById(req.params.id);
-
+  // Handle file upload
   if (req.file) {
-    req.body.image = storeFile('profile', req?.file?.filename);
+    req.body.image = await uploadToS3({
+      file: req.file,
+      fileName: `images/user/profile/${Math.floor(100000 + Math.random() * 900000)}`,
+    });
   }
-  // if (req?.file) {
-  //   req.body.image = await uploadToS3({
-  //     file: req.file,
-  //     fileName: `images/user/profile/${Math.floor(100000 + Math.random() * 900000)}`,
-  //   });
-  // }
+  req.body.name = req.body.firstName + ' ' + req.body.lastName;
+  // Call the service to update the user
+  const updatedUser = await userService.updateUser(req.params.id, req.body);
 
-  const result = await userService.updateUser(req.params.id, req.body);
+  // Respond with the updated user data
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User updated successfully',
-    data: result,
+    data: updatedUser,
   });
 });
 
 const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
   await User.findById(req.user.userId);
-  // if (req?.file) {
-  //   req.body.image = await uploadToS3({
-  //     file: req.file,
-  //     fileName: `images/user/profile/${Math.floor(100000 + Math.random() * 900000)}`,
-  //   });
-  // }
-
   if (req.file) {
-    req.body.image = storeFile('profile', req?.file?.filename);
+    req.body.image = await uploadToS3({
+      file: req.file,
+      fileName: `images/user/profile/${Math.floor(100000 + Math.random() * 900000)}`,
+    });
   }
+  req.body.name = req.body.firstName + ' ' + req.body.lastName;
 
   const result = await userService.updateUser(req?.user?.userId, req.body);
   sendResponse(res, {
