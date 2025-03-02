@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { member_favouriteService } from './member_favourite.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
 // Create Member Favourite
 const createmember_favourite = catchAsync(
@@ -13,8 +15,10 @@ const createmember_favourite = catchAsync(
       memberId,
     );
 
-    res.status(201).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Member favourite created successfully',
       data: newFavourite,
     });
   },
@@ -26,8 +30,10 @@ const getAllmember_favourite = catchAsync(
     const favourites = await member_favouriteService.getAllmember_favourite(
       req.query,
     );
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Member favourites fetched successfully',
       data: favourites,
     });
   },
@@ -49,8 +55,10 @@ const getmember_favouriteById = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Member favourites fetched successfully',
       data: favourite,
     });
   },
@@ -72,8 +80,10 @@ const getMymember_favouriteById = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'My Member favourites fetched successfully',
       data: favourite,
     });
   },
@@ -95,8 +105,10 @@ const updatemember_favourite = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Member favourites updated successfully',
       data: updatedFavourite,
     });
   },
@@ -116,9 +128,11 @@ const deletemember_favourite = catchAsync(
       });
     }
 
-    res.status(204).json({
-      status: 'success',
-      message: 'Favourite deleted successfully',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Member favourites deleted successfully',
+      data: deletedFavourite,
     });
   },
 );

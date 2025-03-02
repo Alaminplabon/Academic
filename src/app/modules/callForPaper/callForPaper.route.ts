@@ -5,7 +5,11 @@ import { USER_ROLE } from '../user/user.constants';
 
 const router = Router();
 
-router.post('/create-callForPaper', callForPaperController.createcallForPaper);
+router.post(
+  '/create-callForPaper',
+  auth(USER_ROLE.user),
+  callForPaperController.createcallForPaper,
+);
 
 router.patch('/update/:id', callForPaperController.updatecallForPaper);
 

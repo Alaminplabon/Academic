@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { eventService } from './event.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
 // Create Event
 const createevent = catchAsync(async (req: Request, res: Response) => {
@@ -81,9 +83,11 @@ const deleteevent = catchAsync(async (req: Request, res: Response) => {
       message: 'Event not found',
     });
   }
-  res.status(204).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
     message: 'Event deleted successfully',
+    data: deletedEvent,
   });
 });
 

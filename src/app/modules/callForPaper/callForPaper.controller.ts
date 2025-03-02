@@ -3,6 +3,8 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { callForPaperService } from './callForPaper.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
 // Create Call for Paper
 const createcallForPaper = catchAsync(async (req: Request, res: Response) => {
@@ -10,8 +12,10 @@ const createcallForPaper = catchAsync(async (req: Request, res: Response) => {
   const newCallForPaper = await callForPaperService.createcallForPaper(
     req.body,
   );
-  res.status(201).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'callForPaper created successfully',
     data: newCallForPaper,
   });
 });
@@ -21,8 +25,10 @@ const getAllcallForPaper = catchAsync(async (req: Request, res: Response) => {
   const callForPaperList = await callForPaperService.getAllcallForPaper(
     req.query,
   );
-  res.status(200).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'All callForPaper successfully',
     data: callForPaperList,
   });
 });
@@ -40,8 +46,10 @@ const getcallForPaperById = catchAsync(async (req: Request, res: Response) => {
       message: 'Call for Paper not found',
     });
   }
-  res.status(200).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'single callForPaper successfully',
     data: callForPaper,
   });
 });
@@ -60,8 +68,10 @@ const getMycallForPaperById = catchAsync(
         message: 'Call for Paper not found',
       });
     }
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'my callForPaper successfully',
       data: callForPaper,
     });
   },
@@ -80,8 +90,10 @@ const updatecallForPaper = catchAsync(async (req: Request, res: Response) => {
       message: 'Call for Paper not found',
     });
   }
-  res.status(200).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'callForPaper updated successfully',
     data: updatedCallForPaper,
   });
 });
@@ -96,9 +108,11 @@ const deletecallForPaper = catchAsync(async (req: Request, res: Response) => {
       message: 'Call for Paper not found',
     });
   }
-  res.status(204).json({
-    status: 'success',
-    message: 'Call for Paper record deleted successfully',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'callForPaper deleted successfully',
+    data: deletedCallForPaper,
   });
 });
 

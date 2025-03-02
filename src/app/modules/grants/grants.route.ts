@@ -5,7 +5,11 @@ import { USER_ROLE } from '../user/user.constants';
 
 const router = Router();
 
-router.post('/create-grants', grantsController.creategrants);
+router.post(
+  '/create-grants',
+  auth(USER_ROLE.user),
+  grantsController.creategrants,
+);
 
 router.patch('/update/:id', grantsController.updategrants);
 

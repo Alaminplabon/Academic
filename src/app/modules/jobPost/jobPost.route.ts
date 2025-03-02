@@ -5,7 +5,11 @@ import auth from '../../middleware/auth';
 
 const router = Router();
 
-router.post('/create-jobPost', jobPostController.createjobPost);
+router.post(
+  '/create-jobPost',
+  auth(USER_ROLE.user),
+  jobPostController.createjobPost,
+);
 
 router.patch('/update/:id', jobPostController.updatejobPost);
 

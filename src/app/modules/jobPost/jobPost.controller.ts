@@ -2,16 +2,28 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { jobPostService } from './jobPost.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
 const createjobPost = catchAsync(async (req: Request, res: Response) => {
   req.body.userId = req?.user?.userId;
   const jobPost = await jobPostService.createjobPost(req.body);
-  res.status(201).json({ status: 'success', data: jobPost });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'jobPost created successfully',
+    data: jobPost,
+  });
 });
 
 const getAlljobPost = catchAsync(async (req: Request, res: Response) => {
   const jobPosts = await jobPostService.getAlljobPost(req.query);
-  res.status(200).json({ status: 'success', data: jobPosts });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'jobPost fetched successfully',
+    data: jobPosts,
+  });
 });
 
 const getjobPostById = catchAsync(async (req: Request, res: Response) => {
@@ -21,7 +33,12 @@ const getjobPostById = catchAsync(async (req: Request, res: Response) => {
       .status(404)
       .json({ status: 'fail', message: 'Job Post not found' });
   }
-  res.status(200).json({ status: 'success', data: jobPost });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'jobPost fetched successfully',
+    data: jobPost,
+  });
 });
 
 const getMyjobPostById = catchAsync(async (req: Request, res: Response) => {
@@ -32,7 +49,12 @@ const getMyjobPostById = catchAsync(async (req: Request, res: Response) => {
       .status(404)
       .json({ status: 'fail', message: 'Job Post not found' });
   }
-  res.status(200).json({ status: 'success', data: jobPost });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'My jobPost fetched successfully',
+    data: jobPost,
+  });
 });
 
 const updatejobPost = catchAsync(async (req: Request, res: Response) => {
@@ -42,7 +64,12 @@ const updatejobPost = catchAsync(async (req: Request, res: Response) => {
       .status(404)
       .json({ status: 'fail', message: 'Job Post not found' });
   }
-  res.status(200).json({ status: 'success', data: jobPost });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'jobPost updated successfully',
+    data: jobPost,
+  });
 });
 
 const deletejobPost = catchAsync(async (req: Request, res: Response) => {
@@ -52,9 +79,12 @@ const deletejobPost = catchAsync(async (req: Request, res: Response) => {
       .status(404)
       .json({ status: 'fail', message: 'Job Post not found' });
   }
-  res
-    .status(204)
-    .json({ status: 'success', message: 'Job Post deleted successfully' });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'jobPost deleted successfully',
+    data: jobPost,
+  });
 });
 
 export const jobPostController = {

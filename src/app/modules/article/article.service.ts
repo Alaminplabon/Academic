@@ -21,7 +21,6 @@ const getarticleById = async (id: string) => {
 
 // Get Articles by Folder ID
 const getArticlesByFolderId = async (id: string) => {
-  console.log('iii', id);
   const articles = await Article.find({ folderId: id });
   return articles;
 };

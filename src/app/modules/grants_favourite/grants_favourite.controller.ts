@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { grants_favouriteService } from './grants_favourite.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
 // Create Grants Favourite
 const creategrants_favourite = catchAsync(
@@ -11,8 +13,10 @@ const creategrants_favourite = catchAsync(
       req.body,
     );
 
-    res.status(201).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Grant favourite created successfully',
       data: newFavourite,
     });
   },
@@ -24,8 +28,10 @@ const getAllgrants_favourite = catchAsync(
     const favourites = await grants_favouriteService.getAllgrants_favourite(
       req.query,
     );
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Grant favourite fetched successfully',
       data: favourites,
     });
   },
@@ -47,8 +53,10 @@ const getgrants_favouriteById = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Grant fetched successfully',
       data: favourite,
     });
   },
@@ -70,8 +78,10 @@ const getMygrants_favouriteById = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'My Grant fetched successfully',
       data: favourite,
     });
   },
@@ -93,8 +103,10 @@ const updategrants_favourite = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Grant favourite updated successfully',
       data: updatedFavourite,
     });
   },
@@ -114,9 +126,11 @@ const deletegrants_favourite = catchAsync(
       });
     }
 
-    res.status(204).json({
-      status: 'success',
-      message: 'Favourite deleted successfully',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Grant favourite deleted successfully',
+      data: deletedFavourite,
     });
   },
 );

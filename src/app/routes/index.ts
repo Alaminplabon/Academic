@@ -17,6 +17,7 @@ import { grants_favouriteRoutes } from '../modules/grants_favourite/grants_favou
 import { jobpost_favouriteRoutes } from '../modules/jobpost_favourite/jobpost_favourite.route';
 import { make_folderRoutes } from '../modules/make_folder/make_folder.route';
 import { articleRoutes } from '../modules/article/article.route';
+import { AdminRoutes } from '../modules/Admin/Admin.route';
 
 const router = Router();
 const moduleRoutes = [
@@ -87,6 +88,10 @@ const moduleRoutes = [
   {
     path: '/article',
     route: articleRoutes,
+  },
+  {
+    path: '/admindashboard',
+    route: AdminRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

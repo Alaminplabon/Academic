@@ -1,9 +1,19 @@
 import Event from './event.models';
 import { Ievent } from './event.interface';
 import QueryBuilder from '../../builder/QueryBuilder';
+import { notificationServices } from '../notification/notification.service';
+import { USER_ROLE } from '../user/user.constants';
+import { modeType } from '../notification/notification.interface';
 
 const createevent = async (eventData: Ievent) => {
   const newEvent = await Event.create(eventData);
+  await notificationServices.insertNotificationIntoDb({
+    receiver: USER_ROLE.admin,
+    message: 'Event Created successfully',
+    description: `User ${eventData.userId} has successfully created an event titled "${eventData.title}".`,
+    refference: newEvent._id,
+    model_type: modeType.Event,
+  });
   return newEvent;
 };
 

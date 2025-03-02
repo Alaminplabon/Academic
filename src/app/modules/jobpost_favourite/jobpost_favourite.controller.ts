@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { jobpost_favouriteService } from './jobpost_favourite.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
 // Create Job Post Favourite
 const createjobpost_favourite = catchAsync(
@@ -11,8 +13,10 @@ const createjobpost_favourite = catchAsync(
       req.body,
     );
 
-    res.status(201).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'jobPost favourite created successfully',
       data: newFavourite,
     });
   },
@@ -24,8 +28,10 @@ const getAlljobpost_favourite = catchAsync(
     const favourites = await jobpost_favouriteService.getAlljobpost_favourite(
       req.query,
     );
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'jobPost favourite fetched successfully',
       data: favourites,
     });
   },
@@ -47,8 +53,10 @@ const getjobpost_favouriteById = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'jobPost favourite fetched successfully',
       data: favourite,
     });
   },
@@ -70,8 +78,10 @@ const getMyjobpost_favouriteById = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'My jobPost favourite fetched successfully',
       data: favourite,
     });
   },
@@ -93,8 +103,10 @@ const updatejobpost_favourite = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'jobPost favourite updated successfully',
       data: updatedFavourite,
     });
   },
@@ -114,9 +126,11 @@ const deletejobpost_favourite = catchAsync(
       });
     }
 
-    res.status(204).json({
-      status: 'success',
-      message: 'Favourite deleted successfully',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'jobPost favourite deleted successfully',
+      data: deletedFavourite,
     });
   },
 );

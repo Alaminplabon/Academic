@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { articleService } from './article.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
 // Create Article
 const createarticle = catchAsync(async (req: Request, res: Response) => {
@@ -9,8 +11,10 @@ const createarticle = catchAsync(async (req: Request, res: Response) => {
     ...req.body,
     userId,
   });
-  res.status(201).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Article created successfully',
     data: newArticle,
   });
 });
@@ -18,17 +22,17 @@ const createarticle = catchAsync(async (req: Request, res: Response) => {
 // Get All Articles
 const getAllarticle = catchAsync(async (req: Request, res: Response) => {
   const articles = await articleService.getAllarticle();
-  res.status(200).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Article fetched successfully',
     data: articles,
   });
 });
 
 // Get Article by ID
 const getarticleById = catchAsync(async (req: Request, res: Response) => {
-  console.log('test');
   const { id } = req.params;
-  console.log('id', id);
   const article = await articleService.getarticleById(id);
   if (!article) {
     return res.status(404).json({
@@ -36,8 +40,10 @@ const getarticleById = catchAsync(async (req: Request, res: Response) => {
       message: 'Article not found',
     });
   }
-  res.status(200).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Article fetched successfully',
     data: article,
   });
 });
@@ -45,10 +51,12 @@ const getarticleById = catchAsync(async (req: Request, res: Response) => {
 // Get Articles by Folder ID
 const getArticlesByFolderId = catchAsync(
   async (req: Request, res: Response) => {
-    const {id} = req.params;
+    const { id } = req.params;
     const articles = await articleService.getArticlesByFolderId(id as any);
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Folder Article fetched successfully',
       data: articles,
     });
   },
@@ -64,8 +72,10 @@ const updatearticle = catchAsync(async (req: Request, res: Response) => {
       message: 'Article not found',
     });
   }
-  res.status(200).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Folder Article updated successfully',
     data: updatedArticle,
   });
 });
@@ -80,9 +90,11 @@ const deletearticle = catchAsync(async (req: Request, res: Response) => {
       message: 'Article not found',
     });
   }
-  res.status(204).json({
-    status: 'success',
-    message: 'Article deleted successfully',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Folder Article deleted successfully',
+    data: deletedArticle,
   });
 });
 

@@ -3,6 +3,7 @@ export enum modeType {
   RefundRequest = 'refundRequest',
   ShopWiseOrder = 'ShopWiseOrder',
   Order = 'Order',
+  Event = 'Event',
 }
 export interface TNotification {
   receiver: ObjectId;

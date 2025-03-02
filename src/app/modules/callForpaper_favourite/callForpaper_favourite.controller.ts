@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { callForpaper_favouriteService } from './callForpaper_favourite.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
 // Create Call for Paper Favourite
 const createcallForpaper_favourite = catchAsync(
@@ -12,8 +14,10 @@ const createcallForpaper_favourite = catchAsync(
         req.body,
       );
 
-    res.status(201).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'callForpaper favourite successfully',
       data: newFavourite,
     });
   },
@@ -26,8 +30,10 @@ const getAllcallForpaper_favourite = catchAsync(
       await callForpaper_favouriteService.getAllcallForpaper_favourite(
         req.query,
       );
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'ALL callForpaper favourite successfully',
       data: favourites,
     });
   },
@@ -50,8 +56,10 @@ const getcallForpaper_favouriteById = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Single callForpaper favourite successfully',
       data: favourite,
     });
   },
@@ -73,8 +81,10 @@ const getMycallForpaper_favouriteById = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'My callForpaper favourite successfully',
       data: favourite,
     });
   },
@@ -99,8 +109,10 @@ const updatecallForpaper_favourite = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'callForpaper favourite updated successfully',
       data: updatedFavourite,
     });
   },
@@ -120,9 +132,11 @@ const deletecallForpaper_favourite = catchAsync(
       });
     }
 
-    res.status(204).json({
-      status: 'success',
-      message: 'Favourite deleted successfully',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'callForpaper favourite removed successfully',
+      data: deletedFavourite,
     });
   },
 );

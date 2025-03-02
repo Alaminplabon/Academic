@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { make_folderService } from './make_folder.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
 // Create Make Folder
 const createmake_folder = catchAsync(async (req: Request, res: Response) => {
@@ -10,8 +12,10 @@ const createmake_folder = catchAsync(async (req: Request, res: Response) => {
     userId,
     req.body,
   );
-  res.status(201).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'folder created successfully',
     data: newFolder,
   });
 });
@@ -20,8 +24,10 @@ const createmake_folder = catchAsync(async (req: Request, res: Response) => {
 const getAllmake_folder = catchAsync(async (req: Request, res: Response) => {
   const userId = req?.user?.userId; // Assuming user ID is retrieved from the token
   const folders = await make_folderService.getAllmake_folder(userId);
-  res.status(200).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'All folders fetched successfully',
     data: folders,
   });
 });
@@ -36,8 +42,10 @@ const getmake_folderById = catchAsync(async (req: Request, res: Response) => {
       message: 'Folder not found',
     });
   }
-  res.status(200).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Folders fetched successfully',
     data: folder,
   });
 });
@@ -56,8 +64,10 @@ const updatemake_folder = catchAsync(async (req: Request, res: Response) => {
       message: 'Folder not found',
     });
   }
-  res.status(200).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Folder updated successfully',
     data: updatedFolder,
   });
 });
@@ -72,9 +82,11 @@ const deletemake_folder = catchAsync(async (req: Request, res: Response) => {
       message: 'Folder not found',
     });
   }
-  res.status(204).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
     message: 'Folder deleted successfully',
+    data: deletedFolder,
   });
 });
 
