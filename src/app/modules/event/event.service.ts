@@ -7,18 +7,18 @@ import { modeType } from '../notification/notification.interface';
 
 const createevent = async (eventData: Ievent) => {
   const newEvent = await Event.create(eventData);
-  await notificationServices.insertNotificationIntoDb({
-    receiver: USER_ROLE.admin,
-    message: 'Event Created successfully',
-    description: `User ${eventData.userId} has successfully created an event titled "${eventData.title}".`,
-    refference: newEvent._id,
-    model_type: modeType.Event,
-  });
+  // await notificationServices.insertNotificationIntoDb({
+  //   receiver: USER_ROLE.admin,
+  //   message: 'Event Created successfully',
+  //   description: `User ${eventData.userId} has successfully created an event titled "${eventData.title}".`,
+  //   refference: newEvent._id,
+  //   model_type: modeType.Event,
+  // });
   return newEvent;
 };
 
 const getAllevent = async (query: Record<string, any>) => {
-  const eventModel = new QueryBuilder(Event.find(), query)
+  const eventModel = new QueryBuilder(Event.find().populate('userId'), query)
     .search(['title'])
     .filter()
     .paginate()
@@ -75,6 +75,23 @@ const deleteevent = async (id: string) => {
   return deletedEvent;
 };
 
+const getEventByUserId = async (userId: string, query: Record<string, any>) => {
+  const eventModel = new QueryBuilder(Event.find({ userId }), query)
+    .search(['title']) // Adjust search fields as needed
+    .filter()
+    .paginate()
+    .sort();
+
+  const data: any = await eventModel.modelQuery;
+  const meta = await eventModel.countTotal();
+
+  return {
+    data,
+    meta,
+  };
+};
+
+
 export const eventService = {
   createevent,
   getAllevent,
@@ -82,4 +99,5 @@ export const eventService = {
   updateevent,
   deleteevent,
   getMyeventById,
+  getEventByUserId,
 };

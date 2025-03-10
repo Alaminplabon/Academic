@@ -135,6 +135,20 @@ const deletegrants_favourite = catchAsync(
   },
 );
 
+const getgrants_favouriteByUserId = catchAsync(
+  async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const grants_favourite =
+      await grants_favouriteService.getgrants_FavouriteByUserId(userId, req.query);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Grant favourite retrieved successfully',
+      data: grants_favourite,
+    });
+  },
+);
+
 export const grants_favouriteController = {
   creategrants_favourite,
   getAllgrants_favourite,
@@ -142,4 +156,5 @@ export const grants_favouriteController = {
   updategrants_favourite,
   deletegrants_favourite,
   getMygrants_favouriteById,
+  getgrants_favouriteByUserId,
 };

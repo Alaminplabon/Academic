@@ -141,6 +141,23 @@ const deletecallForpaper_favourite = catchAsync(
   },
 );
 
+const getcallForpaper_favouriteByUserId = catchAsync(
+  async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const callForPaper_favourite =
+      await callForpaper_favouriteService.getCallForPaperFavouriteByUserId(
+        userId,
+        req.query,
+      );
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'callForpaper favourite retrieved successfully',
+      data: callForPaper_favourite,
+    });
+  },
+);
+
 export const callForpaper_favouriteController = {
   createcallForpaper_favourite,
   getAllcallForpaper_favourite,
@@ -148,4 +165,5 @@ export const callForpaper_favouriteController = {
   updatecallForpaper_favourite,
   deletecallForpaper_favourite,
   getMycallForpaper_favouriteById,
+  getcallForpaper_favouriteByUserId,
 };

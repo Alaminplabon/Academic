@@ -4,12 +4,12 @@ import { Ijobpost_favourite } from './jobpost_favourite.interface';
 const JobPostFavouriteSchema: Schema<Ijobpost_favourite> = new Schema(
   {
     userId: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
     jobpostId: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'JobPost',
       required: true,
     },

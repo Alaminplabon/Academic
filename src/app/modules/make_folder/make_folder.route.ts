@@ -19,7 +19,8 @@ router.get(
   auth(USER_ROLE.user),
   make_folderController.getMyFolders,
 );
+router.get('/public/:userId', make_folderController.getPublicFoldersByUserId);
 router.get('/:id', make_folderController.getmake_folderById);
-router.get('/', auth(USER_ROLE.user), make_folderController.getAllmake_folder);
+router.get('/', make_folderController.getAllmake_folder);
 
 export const make_folderRoutes = router;

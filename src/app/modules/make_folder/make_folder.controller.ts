@@ -7,7 +7,6 @@ import httpStatus from 'http-status';
 // Create Make Folder
 const createmake_folder = catchAsync(async (req: Request, res: Response) => {
   const userId = req?.user?.userId; // Assuming user ID is retrieved from the token
-
   const newFolder = await make_folderService.createmake_folder(
     userId,
     req.body,
@@ -22,8 +21,8 @@ const createmake_folder = catchAsync(async (req: Request, res: Response) => {
 
 // Get All Make Folders
 const getAllmake_folder = catchAsync(async (req: Request, res: Response) => {
-  const userId = req?.user?.userId; // Assuming user ID is retrieved from the token
-  const folders = await make_folderService.getAllmake_folder(userId);
+  // const userId = req?.user?.userId; // Assuming user ID is retrieved from the token
+  const folders = await make_folderService.getAllmake_folder();
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -99,6 +98,20 @@ const getMyFolders = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getPublicFoldersByUserId = catchAsync(
+  async (req: Request, res: Response) => {
+    const userId = req.params.userId; // Get user ID from request parameters
+    const folders = await make_folderService.getPublicFoldersByUserId(userId);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Public folders fetched successfully',
+      data: folders,
+    });
+  },
+);
+
 export const make_folderController = {
   createmake_folder,
   getAllmake_folder,
@@ -106,4 +119,5 @@ export const make_folderController = {
   updatemake_folder,
   deletemake_folder,
   getMyFolders,
+  getPublicFoldersByUserId,
 };

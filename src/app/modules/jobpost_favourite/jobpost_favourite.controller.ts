@@ -135,6 +135,23 @@ const deletejobpost_favourite = catchAsync(
   },
 );
 
+const getjobpost_favouriteByUserId = catchAsync(
+  async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const jobpost_favourite =
+      await jobpost_favouriteService.getJobPostFavouriteByUserId(
+        userId,
+        req.query,
+      );
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'jobPost favourite retrieved successfully',
+      data: jobpost_favourite,
+    });
+  },
+);
+
 export const jobpost_favouriteController = {
   createjobpost_favourite,
   getAlljobpost_favourite,
@@ -142,4 +159,5 @@ export const jobpost_favouriteController = {
   updatejobpost_favourite,
   deletejobpost_favourite,
   getMyjobpost_favouriteById,
+  getjobpost_favouriteByUserId,
 };

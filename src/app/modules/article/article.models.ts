@@ -17,7 +17,7 @@ const ArticleSchema: Schema<Iarticle> = new Schema(
     },
     submission_deadline: {
       type: String,
-      required: true,
+      // required: true,
     },
     keywords: {
       type: [String],

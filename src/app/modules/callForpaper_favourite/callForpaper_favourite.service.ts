@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
 import { IcallForPaper_favourite } from './callForpaper_favourite.interface';
 import CallForpaperFavourite from './callForpaper_favourite.models';
@@ -24,7 +25,10 @@ const createcallForpaper_favourite = async (
 
 // Get All Call for Paper Favourites
 const getAllcallForpaper_favourite = async (query: Record<string, any>) => {
-  const favouriteModel = new QueryBuilder(CallForpaperFavourite.find(), query)
+  const favouriteModel = new QueryBuilder(
+    CallForpaperFavourite.find().populate('callForPaperId'),
+    query,
+  )
     .search(['userId', 'callForPaperId'])
     .filter()
     .paginate()
@@ -45,7 +49,7 @@ const getcallForpaper_favouriteById = async (
   query: Record<string, any>,
 ) => {
   const favouriteModel = new QueryBuilder(
-    CallForpaperFavourite.find({ _id: id }),
+    CallForpaperFavourite.find({ _id: id }).populate('callForPaperId'),
     query,
   )
     .search(['userId', 'callForPaperId'])
@@ -67,7 +71,7 @@ const getMycallForpaper_favouriteById = async (
   query: Record<string, any>,
 ) => {
   const favouriteModel = new QueryBuilder(
-    CallForpaperFavourite.find({ userId: id }),
+    CallForpaperFavourite.find({ userId: id }).populate('callForPaperId'),
     query,
   )
     .search(['userId', 'callForPaperId'])
@@ -103,6 +107,81 @@ const deletecallForpaper_favourite = async (id: string) => {
   return deletedFavourite;
 };
 
+// const getCallForPaperFavouriteByUserId = async (
+//   userId: string,
+//   query: Record<string, any>,
+// ) => {
+//   const callForPaperFavouriteModel = new QueryBuilder(
+//     CallForpaperFavourite.find({ userId }).populate('callForPaperId'),
+//     query,
+//   )
+//     .search(['title']) // You can adjust the search fields as needed
+//     .filter()
+//     .paginate()
+//     .sort();
+
+//   const data: any = await callForPaperFavouriteModel.modelQuery;
+//   const meta = await callForPaperFavouriteModel.countTotal();
+
+//   return {
+//     data,
+//     meta,
+//   };
+// };
+
+const getCallForPaperFavouriteByUserId = async (
+  userId: string,
+  query: Record<string, any>,
+) => {
+  const {
+    searchTerm,
+    page = 1,
+    limit = 10,
+    sortField = 'createdAt',
+    sortOrder = 'desc',
+  } = query;
+
+  const matchStage = { userId: new mongoose.Types.ObjectId(userId) };
+
+  const pipeline: any = [
+    { $match: matchStage },
+    {
+      $lookup: {
+        from: 'callforpapers', // Ensure this matches your actual collection name
+        localField: 'callForPaperId',
+        foreignField: '_id',
+        as: 'callForPaperInfo',
+      },
+    },
+    {
+      $unwind: {
+        path: '$callForPaperInfo',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $match: searchTerm
+        ? { 'callForPaperInfo.title': { $regex: searchTerm, $options: 'i' } }
+        : {},
+    },
+    { $sort: { [sortField]: sortOrder === 'asc' ? 1 : -1 } },
+    { $skip: (page - 1) * limit },
+    { $limit: parseInt(limit, 10) },
+  ];
+
+  const data = await CallForpaperFavourite.aggregate(pipeline);
+  const total = await CallForpaperFavourite.countDocuments(matchStage);
+
+  return {
+    data,
+    meta: {
+      total,
+      page,
+      limit,
+    },
+  };
+};
+
 export const callForpaper_favouriteService = {
   createcallForpaper_favourite,
   getAllcallForpaper_favourite,
@@ -110,4 +189,5 @@ export const callForpaper_favouriteService = {
   updatecallForpaper_favourite,
   deletecallForpaper_favourite,
   getMycallForpaper_favouriteById,
+  getCallForPaperFavouriteByUserId,
 };

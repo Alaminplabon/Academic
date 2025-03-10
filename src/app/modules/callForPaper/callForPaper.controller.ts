@@ -116,6 +116,22 @@ const deletecallForPaper = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getCallForPaperByUserId = catchAsync(
+  async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const callForPapers = await callForPaperService.getCallForPaperByUserId(
+      userId,
+      req.query,
+    );
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Call for Papers retrieved successfully',
+      data: callForPapers,
+    });
+  },
+);
+
 export const callForPaperController = {
   createcallForPaper,
   getAllcallForPaper,
@@ -123,4 +139,5 @@ export const callForPaperController = {
   updatecallForPaper,
   deletecallForPaper,
   getMycallForPaperById,
+  getCallForPaperByUserId,
 };

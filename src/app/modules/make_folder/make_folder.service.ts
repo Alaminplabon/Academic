@@ -12,11 +12,8 @@ const createmake_folder = async (userId: object, payload: IMake_Folder) => {
 };
 
 // Get All Make Folders
-const getAllmake_folder = async (userId: object) => {
-  const folders = await MakeFolder.find({ isPrivate: false }).or([
-    { userId },
-    { isPrivate: true },
-  ]);
+const getAllmake_folder = async () => {
+  const folders = await MakeFolder.find({ isPrivate: false });
   return folders;
 };
 
@@ -47,6 +44,10 @@ const getMyFolders = async (userId: object) => {
   return folders;
 };
 
+const getPublicFoldersByUserId = async (userId: string) => {
+  return await MakeFolder.find({ userId, isPrivate: false });
+};
+
 export const make_folderService = {
   createmake_folder,
   getAllmake_folder,
@@ -54,4 +55,5 @@ export const make_folderService = {
   updatemake_folder,
   deletemake_folder,
   getMyFolders,
+  getPublicFoldersByUserId,
 };

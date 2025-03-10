@@ -7,16 +7,19 @@ const router = Router();
 
 router.post(
   '/create-callForPaper',
-  auth(USER_ROLE.user),
+  auth(USER_ROLE.user, USER_ROLE.admin),
   callForPaperController.createcallForPaper,
 );
 
 router.patch('/update/:id', callForPaperController.updatecallForPaper);
-
+router.get(
+  '/user-callForPaper/:userId',
+  callForPaperController.getCallForPaperByUserId,
+);
 router.delete('/:id', callForPaperController.deletecallForPaper);
 router.get(
   '/my-callForPaper',
-  auth(USER_ROLE.user),
+  auth(USER_ROLE.user, USER_ROLE.admin),
   callForPaperController.getMycallForPaperById,
 );
 router.get('/:id', callForPaperController.getcallForPaperById);

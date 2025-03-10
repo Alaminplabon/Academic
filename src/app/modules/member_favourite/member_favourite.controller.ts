@@ -7,12 +7,10 @@ import httpStatus from 'http-status';
 // Create Member Favourite
 const createmember_favourite = catchAsync(
   async (req: Request, res: Response) => {
-    const { memberId } = req.body;
-    const userId = req?.user?.userId;
-
+    // const { memberId } = req.body;
+    req.body.userId = req?.user?.userId;
     const newFavourite = await member_favouriteService.createmember_favourite(
-      userId,
-      memberId,
+      req.body,
     );
 
     sendResponse(res, {
@@ -137,6 +135,23 @@ const deletemember_favourite = catchAsync(
   },
 );
 
+const getMember_favouriteByUserId = catchAsync(
+  async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const member_favourite =
+      await member_favouriteService.getMemberFavouriteByUserId(
+        userId,
+        req.query,
+      );
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'event favourite retrieved successfully',
+      data: member_favourite,
+    });
+  },
+);
+
 export const member_favouriteController = {
   createmember_favourite,
   getAllmember_favourite,
@@ -144,4 +159,5 @@ export const member_favouriteController = {
   updatemember_favourite,
   deletemember_favourite,
   getMymember_favouriteById,
+  getMember_favouriteByUserId,
 };

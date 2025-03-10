@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { event_favouriteService } from './event_favourite.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
 // Create Event Favourite
 const createevent_favourite = catchAsync(
@@ -11,8 +13,10 @@ const createevent_favourite = catchAsync(
       req.body,
     );
 
-    res.status(201).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'event favourite created successfully',
       data: newFavourite,
     });
   },
@@ -24,8 +28,10 @@ const getAllevent_favourite = catchAsync(
     const favourites = await event_favouriteService.getAllevent_favourite(
       req.query,
     );
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'event favourite fetched successfully',
       data: favourites,
     });
   },
@@ -47,8 +53,10 @@ const getevent_favouriteById = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'event favourite fetched successfully',
       data: favourite,
     });
   },
@@ -70,8 +78,10 @@ const getMyevent_favouriteById = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'event favourite fetched successfully',
       data: favourite,
     });
   },
@@ -95,8 +105,10 @@ const updateevent_favourite = catchAsync(
       });
     }
 
-    res.status(200).json({
-      status: 'success',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'event favourite updated successfully',
       data: updatedFavourite,
     });
   },
@@ -116,9 +128,25 @@ const deleteevent_favourite = catchAsync(
       });
     }
 
-    res.status(204).json({
-      status: 'success',
-      message: 'Favourite deleted successfully',
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'event favourite removed successfully',
+      data: deletedFavourite,
+    });
+  },
+);
+
+const getevent_favouriteByUserId = catchAsync(
+  async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const event_favourite =
+      await event_favouriteService.getEventFavouriteByUserId(userId, req.query);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'event favourite retrieved successfully',
+      data: event_favourite,
     });
   },
 );
@@ -130,4 +158,5 @@ export const event_favouriteController = {
   updateevent_favourite,
   deleteevent_favourite,
   getMyevent_favouriteById,
+  getevent_favouriteByUserId,
 };

@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
 import { Ijobpost_favourite } from './jobpost_favourite.interface';
 import JobPostFavourite from './jobpost_favourite.models';
@@ -22,7 +23,10 @@ const createjobpost_favourite = async (payload: Ijobpost_favourite) => {
 
 // Get All Job Post Favourites
 const getAlljobpost_favourite = async (query: Record<string, any>) => {
-  const favouriteModel = new QueryBuilder(JobPostFavourite.find(), query)
+  const favouriteModel = new QueryBuilder(
+    JobPostFavourite.find().populate('jobpostId'),
+    query,
+  )
     .search(['userId', 'jobpostId'])
     .filter()
     .paginate()
@@ -43,7 +47,7 @@ const getjobpost_favouriteById = async (
   query: Record<string, any>,
 ) => {
   const favouriteModel = new QueryBuilder(
-    JobPostFavourite.find({ _id: id }),
+    JobPostFavourite.find({ _id: id }).populate('jobpostId'),
     query,
   )
     .search(['userId', 'jobpostId'])
@@ -65,7 +69,7 @@ const getMyjobpost_favouriteById = async (
   query: Record<string, any>,
 ) => {
   const favouriteModel = new QueryBuilder(
-    JobPostFavourite.find({ userId: id }),
+    JobPostFavourite.find({ userId: id }).populate('jobpostId'),
     query,
   )
     .search(['userId', 'jobpostId'])
@@ -98,6 +102,70 @@ const deletejobpost_favourite = async (id: string) => {
   return deletedFavourite;
 };
 
+// const getJobPostFavouriteByUserId = async (
+//   userId: string,
+//   query: Record<string, any>,
+// ) => {
+//   const jobPostFavouriteModel = new QueryBuilder(
+//     JobPostFavourite.find({ userId }).populate('jobpostId'),
+//     query,
+//   )
+//     .search(['title']) // Adjust search fields as needed
+//     .filter()
+//     .paginate()
+//     .sort();
+
+//   const data: any = await jobPostFavouriteModel.modelQuery;
+//   const meta = await jobPostFavouriteModel.countTotal();
+
+//   return {
+//     data,
+//     meta,
+//   };
+// };
+
+const getJobPostFavouriteByUserId = async (
+  userId: string,
+  query: Record<string, any>,
+) => {
+  const {
+    searchTerm,
+    page = 1,
+    limit = 10,
+    sortField = 'createdAt',
+    sortOrder = 'desc',
+  } = query;
+
+  const matchStage = { userId: new mongoose.Types.ObjectId(userId) };
+
+  const pipeline: any = [
+    { $match: matchStage },
+    {
+      $lookup: {
+        from: 'jobposts',
+        localField: 'jobpostId',
+        foreignField: '_id',
+        as: 'jobPostInfo',
+      },
+    },
+
+    { $unwind: { path: '$jobPostInfo', preserveNullAndEmptyArrays: true } },
+    {
+      $match: searchTerm
+        ? { 'jobPostInfo.title': { $regex: searchTerm, $options: 'i' } }
+        : {},
+    },
+    { $sort: { [sortField]: sortOrder === 'asc' ? 1 : -1 } },
+    { $skip: (page - 1) * limit },
+    { $limit: parseInt(limit, 10) },
+  ];
+
+  const data = await JobPostFavourite.aggregate(pipeline);
+  const total = await JobPostFavourite.countDocuments(matchStage);
+
+  return { data, meta: { total, page, limit } };
+};
+
 export const jobpost_favouriteService = {
   createjobpost_favourite,
   getAlljobpost_favourite,
@@ -105,4 +173,5 @@ export const jobpost_favouriteService = {
   updatejobpost_favourite,
   deletejobpost_favourite,
   getMyjobpost_favouriteById,
+  getJobPostFavouriteByUserId,
 };

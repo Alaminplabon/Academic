@@ -7,16 +7,19 @@ const router = Router();
 
 router.post(
   '/create-grants_favourite',
-  auth(USER_ROLE.user),
+  auth(USER_ROLE.user, USER_ROLE.admin),
   grants_favouriteController.creategrants_favourite,
 );
 
 router.patch('/update/:id', grants_favouriteController.updategrants_favourite);
-
+router.get(
+  '/user-grants_favourite/:userId',
+  grants_favouriteController.getgrants_favouriteByUserId,
+);
 router.delete('/:id', grants_favouriteController.deletegrants_favourite);
 router.get(
   '/my-grants_favourite',
-  auth(USER_ROLE.user),
+  auth(USER_ROLE.user, USER_ROLE.admin),
   grants_favouriteController.getMygrants_favouriteById,
 );
 router.get('/:id', grants_favouriteController.getgrants_favouriteById);

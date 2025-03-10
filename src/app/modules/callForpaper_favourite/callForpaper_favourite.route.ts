@@ -7,13 +7,18 @@ const router = Router();
 
 router.post(
   '/create-callForpaper_favourite',
-  auth(USER_ROLE.user),
+  auth(USER_ROLE.user, USER_ROLE.admin),
   callForpaper_favouriteController.createcallForpaper_favourite,
 );
 
 router.patch(
   '/update/:id',
   callForpaper_favouriteController.updatecallForpaper_favourite,
+);
+
+router.get(
+  '/user-callForpaper_favourite/:userId',
+  callForpaper_favouriteController.getcallForpaper_favouriteByUserId,
 );
 
 router.delete(

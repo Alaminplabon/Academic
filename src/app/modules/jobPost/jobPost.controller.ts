@@ -87,6 +87,17 @@ const deletejobPost = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getJobPostByUserId = catchAsync(async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const JobPosts = await jobPostService.getJobPostByUserId(userId, req.query);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Call for Papers retrieved successfully',
+    data: JobPosts,
+  });
+});
+
 export const jobPostController = {
   createjobPost,
   getAlljobPost,
@@ -94,4 +105,5 @@ export const jobPostController = {
   updatejobPost,
   deletejobPost,
   getMyjobPostById,
+  getJobPostByUserId,
 };

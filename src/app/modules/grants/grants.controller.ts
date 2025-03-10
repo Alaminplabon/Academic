@@ -93,6 +93,17 @@ const deletegrants = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getgrantsByUserId = catchAsync(async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const grants = await grantsService.getgrantsByUserId(userId, req.query);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Grants retrieved successfully',
+    data: grants,
+  });
+});
+
 export const grantsController = {
   creategrants,
   getAllgrants,
@@ -100,4 +111,5 @@ export const grantsController = {
   updategrants,
   deletegrants,
   getMygrantsById,
+  getgrantsByUserId,
 };

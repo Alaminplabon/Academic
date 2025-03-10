@@ -6,7 +6,7 @@ import httpStatus from 'http-status';
 
 // Create Article
 const createarticle = catchAsync(async (req: Request, res: Response) => {
-  const userId = req?.user?.userId; // Extract userId from token
+  const userId = req?.user?.userId; 
   const newArticle = await articleService.createarticle({
     ...req.body,
     userId,

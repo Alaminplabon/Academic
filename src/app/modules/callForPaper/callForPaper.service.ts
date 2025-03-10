@@ -10,7 +10,10 @@ const createcallForPaper = async (data: IcallForPaper) => {
 };
 
 const getAllcallForPaper = async (query: Record<string, any>) => {
-  const callForPaperModel = new QueryBuilder(CallForPaper.find(), query)
+  const callForPaperModel = new QueryBuilder(
+    CallForPaper.find().populate('userId'),
+    query,
+  )
     .search(['title'])
     .filter()
     .paginate()
@@ -78,6 +81,28 @@ const deletecallForPaper = async (id: string) => {
   return deletedCallForPaper;
 };
 
+const getCallForPaperByUserId = async (
+  userId: string,
+  query: Record<string, any>,
+) => {
+  const callForPaperModel = new QueryBuilder(
+    CallForPaper.find({ userId }),
+    query,
+  )
+    .search(['title'])
+    .filter()
+    .paginate()
+    .sort();
+
+  const data: any = await callForPaperModel.modelQuery;
+  const meta = await callForPaperModel.countTotal();
+
+  return {
+    data,
+    meta,
+  };
+};
+
 export const callForPaperService = {
   createcallForPaper,
   getAllcallForPaper,
@@ -85,4 +110,5 @@ export const callForPaperService = {
   updatecallForPaper,
   deletecallForPaper,
   getMycallForPaperById,
+  getCallForPaperByUserId,
 };
