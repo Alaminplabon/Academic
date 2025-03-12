@@ -4,6 +4,10 @@ export enum modeType {
   ShopWiseOrder = 'ShopWiseOrder',
   Order = 'Order',
   Event = 'Event',
+  User = 'User',
+  CallForPaper = 'CallForPaper',
+  jobPost = 'jobPost',
+  Grants = 'Grants',
 }
 export interface TNotification {
   receiver: ObjectId;

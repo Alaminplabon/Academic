@@ -19,6 +19,8 @@ import { make_folderRoutes } from '../modules/make_folder/make_folder.route';
 import { articleRoutes } from '../modules/article/article.route';
 import { AdminRoutes } from '../modules/Admin/Admin.route';
 import { subscriberRoutes } from '../modules/subscriber/subscriber.route';
+import { invitationRoutes } from '../modules/invitation/invitation.route';
+import { calenderRoutes } from '../modules/calender/calender.route';
 
 const router = Router();
 const moduleRoutes = [
@@ -97,6 +99,14 @@ const moduleRoutes = [
   {
     path: '/subscriber',
     route: subscriberRoutes,
+  },
+  {
+    path: '/invite',
+    route: invitationRoutes,
+  },
+  {
+    path: '/calender',
+    route: calenderRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

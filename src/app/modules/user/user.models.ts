@@ -77,6 +77,7 @@ const userSchema: Schema<IUser> = new Schema(
       },
       coordinates: {
         type: [Number],
+        default: [0, 0],
       },
     },
     needsPasswordChange: {
@@ -165,10 +166,10 @@ userSchema.pre<Query<IUser | null, IUser>>('findOne', function (next) {
   next();
 });
 
-userSchema.pre('aggregate', function (next) {
-  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
-  next();
-});
+// userSchema.pre('aggregate', function (next) {
+//   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+//   next();
+// });
 
 userSchema.statics.isUserExist = async function (email: string) {
   return await User.findOne({ email: email }).select('+password');
@@ -184,6 +185,7 @@ userSchema.statics.isPasswordMatched = async function (
   return await bcrypt.compare(plainTextPassword, hashedPassword);
 };
 
+// userSchema.index({ location: '2dsphere' });
 // userSchema.index({ location: '2dsphere' });
 
 export const User = model<IUser, UserModel>('User', userSchema);
