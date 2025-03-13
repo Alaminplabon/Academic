@@ -9,11 +9,7 @@ const router = Router();
 router.post('/create-privacy', privacyController.createprivacy);
 
 // Update Privacy
-router.patch(
-  '/update/:id',
-  auth(USER_ROLE.admin),
-  privacyController.updateprivacy,
-);
+router.patch('/update', auth(USER_ROLE.admin), privacyController.updateprivacy);
 
 // Delete Privacy
 // router.delete('/:id', privacyController.deleteprivacy);
@@ -22,6 +18,6 @@ router.patch(
 router.get('/:id', privacyController.getprivacyById);
 
 // Get All Privacy
-// router.get('/', privacyController.getAllprivacy);
+router.get('/', privacyController.getAllprivacy);
 
 export const privacyRoutes = router;

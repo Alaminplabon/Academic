@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import Privacy from './privacy.models';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
+import { IPrivacy } from './privacy.interface';
 
 // Create Privacy
 const createprivacy = catchAsync(async (req: Request, res: Response) => {
@@ -39,21 +42,18 @@ const getprivacyById = catchAsync(async (req: Request, res: Response) => {
 
 // Update Privacy
 const updateprivacy = catchAsync(async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { description } = req.body;
-  const updatedPrivacy = await Privacy.findByIdAndUpdate(
-    id,
-    { description },
+  const privacy = await Privacy.findOne({});
+  const updatedPrivacy: IPrivacy | null = await Privacy.findByIdAndUpdate(
+    privacy?._id,
+    {
+      description: req.body.description,
+    },
     { new: true },
   );
-  if (!updatedPrivacy) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Privacy not found',
-    });
-  }
-  res.status(200).json({
-    status: 'success',
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Updated successfully',
     data: updatedPrivacy,
   });
 });

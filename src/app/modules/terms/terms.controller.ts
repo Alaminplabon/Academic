@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { termsService } from './terms.service';
+import Terms from './terms.models';
+import { Iterms } from './terms.interface';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
 // Create Terms
 const createterms = catchAsync(async (req: Request, res: Response) => {
@@ -39,17 +43,18 @@ const gettermsById = catchAsync(async (req: Request, res: Response) => {
 
 // Update Terms
 const updateterms = catchAsync(async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { description } = req.body;
-  const updatedTerms = await termsService.updateterms(id, description);
-  if (!updatedTerms) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Terms not found',
-    });
-  }
-  res.status(200).json({
-    status: 'success',
+  const terms = await Terms.findOne({});
+  const updatedTerms: Iterms | null = await Terms.findByIdAndUpdate(
+    terms?._id,
+    {
+      description: req.body.description,
+    },
+    { new: true },
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Updated successfully',
     data: updatedTerms,
   });
 });
