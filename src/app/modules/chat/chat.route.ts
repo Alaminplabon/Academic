@@ -23,7 +23,7 @@ router.patch(
     USER_ROLE.admin,  
     USER_ROLE.user,
   ),
-  validateRequest(chatValidation.createChatValidation),
+  // validateRequest(chatValidation.createChatValidation),
   chatController.updateChat,
 );
 

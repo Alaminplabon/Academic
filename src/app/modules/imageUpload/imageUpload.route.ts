@@ -8,9 +8,10 @@ import multer, { memoryStorage } from 'multer';
 const router = Router();
 const storage = memoryStorage();
 const upload = multer({ storage });
+
 router.post(
   '/create-imageUpload',
-  auth(USER_ROLE.admin, USER_ROLE.member, USER_ROLE.administrator),
+  auth(USER_ROLE.admin, USER_ROLE.user),
   upload.fields([{ name: 'images', maxCount: 5 }]),
   parseData(),
   imageUploadController.createimageUpload,

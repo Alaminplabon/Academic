@@ -6,14 +6,9 @@ import { ImageUploadService } from './imageUpload.service';
 const createimageUpload = catchAsync(async (req: Request, res: Response) => {
   const userId = req.user?.userId;
   req.body.userId = userId;
-  if (!userId) {
-    return sendResponse(res, {
-      statusCode: 400,
-      success: false,
-      message: 'User not authenticated.',
-      data: {},
-    });
-  }
+
+  console.log('req.body-----------', req.body);
+  console.log('req.files', req.files);
 
   const result = await ImageUploadService.createimageUpload(
     req.body,
